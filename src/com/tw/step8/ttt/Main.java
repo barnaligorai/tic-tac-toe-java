@@ -1,5 +1,6 @@
 package com.tw.step8.ttt;
 
+import com.tw.step8.ttt.model.Game;
 import com.tw.step8.ttt.model.Player;
 import com.tw.step8.ttt.symbol.Symbol;
 
@@ -13,6 +14,7 @@ public class Main {
 
     Player[] players = new Player[]{player1, player2};
 
-    System.out.println(Arrays.toString(players));
+    Game game = new Game(players);
+    System.out.println(game);
   }
 }
