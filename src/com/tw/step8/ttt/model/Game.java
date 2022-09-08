@@ -92,7 +92,7 @@ public class Game {
     String player2Info = String.format("%s : %s", players[1].getName(), players[1].getSymbol());
     String playersInfo = String.format("-----------------------\n%s %s\n", player1Info, player2Info);
 
-    String board = String.format(" %s %s %s\n %s %s %s\n %s %s %s", this.cells);
+    String board = String.format(" %s %s %s\n %s %s %s\n %s %s %s\n", this.cells);
     return playersInfo + board;
   }
 
