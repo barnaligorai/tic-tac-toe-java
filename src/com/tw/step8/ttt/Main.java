@@ -11,21 +11,27 @@ public class Main {
     Player player1 = new Player("Ramesh", Symbol.X);
     Player player2 = new Player("Suresh", Symbol.O);
     Player[] players = new Player[]{player1, player2};
-
     Game game = new Game(players);
-
-    System.out.println(game.displayCells());
     Scanner scanner = new Scanner(System.in);
 
     while(!game.isGameOver()) {
-      System.out.println("Enter position");
-      int cellPos = Integer.parseInt(scanner.next());
-      game.play(cellPos);
-      System.out.println(game.displayCells());
+      playGame(game, scanner);
     }
 
     scanner.close();
-    System.out.println("game over");
+    displayGameResult(game);
   }
 
+  private static void displayGameResult(Game game) {
+    System.out.println(game.displayGame());
+    System.out.println(game.results());
+  }
+
+  private static void playGame(Game game, Scanner scanner) {
+    System.out.println(game.displayGame());
+    System.out.printf(game.prompt());
+
+    int cellPos = Integer.parseInt(scanner.next());
+    game.play(cellPos);
+  }
 }

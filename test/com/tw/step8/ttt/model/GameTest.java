@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
   @Test
-  void currentPlayer() {
+  void currentPlayerShouldReturnTheCurrentPlayer() {
     Player bani = new Player("bani", Symbol.X);
     Player barnali = new Player("barnali", Symbol.X);
 
@@ -18,4 +18,30 @@ class GameTest {
     assertEquals(barnali, game2.currentPlayer());
 
   }
+
+  @Test
+  void isGameOverShouldReturnFalseForARunningGame() {
+    Player bani = new Player("bani", Symbol.X);
+    Player barnali = new Player("barnali", Symbol.X);
+
+    Game game = new Game(new Player[]{bani, barnali});
+
+    assertFalse(game.isGameOver());
+  }
+  @Test
+  void isGameOverShouldReturnTrueWhenGameIsOver() {
+    Player bani = new Player("bani", Symbol.X);
+    Player barnali = new Player("barnali", Symbol.X);
+
+    Game game = new Game(new Player[]{bani, barnali});
+    game.play(1);
+    game.play(4);
+    game.play(2);
+    game.play(5);
+    game.play(3);
+
+    assertTrue(game.isGameOver());
+  }
+
+
 }

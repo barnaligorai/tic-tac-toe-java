@@ -9,6 +9,8 @@ public class Game {
   private final String[] cells = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
   private int currentPlayerIndex;
   private boolean isGameOver = false;
+  private Player won;
+  private int movesPlayed = 0;
 
   public Game(Player[] players) {
     this.players = players;
@@ -26,19 +28,23 @@ public class Game {
   private void markCell(int cellPosition) {
     int cellIndex = cellPosition - 1;
     this.cells[cellIndex] = String.valueOf(this.currentPlayer().getSymbol());
+    this.movesPlayed += 1;
   }
 
   public void play(int cellPosition) {
     this.markCell(cellPosition);
 
-    this.isOver();
+    if (this.isOver()) {
+      return;
+    }
     this.changePlayer();
   }
 
-  private boolean isEvery (int[] winningCombo, String expectedSymbol) {
-    for (int index = 0; index < winningCombo.length; index++) {
+  private boolean isEvery (int[] winningComboIndices, String expectedSymbol) {
 
-      String actualSymbol = this.cells[winningCombo[index]];
+    for (int index : winningComboIndices) {
+
+      String actualSymbol = this.cells[index];
       if (!Objects.equals(actualSymbol, expectedSymbol)) {
         return false;
       }
@@ -51,25 +57,48 @@ public class Game {
 
     for (int[] combination : winningCombination) {
       if (isEvery(combination,symbol)){
+        this.won = this.currentPlayer();
         return true;
       }
     }
     return false;
   }
 
-  private void isOver(){
-    if (this.isWon()) {
+  private boolean isOver(){
+    if (this.isWon() || this.isDrawn()) {
       this.isGameOver = true;
+      return true;
     }
+      return false;
+  }
+
+  private boolean isDrawn() {
+    return this.movesPlayed == 9 && !this.isWon();
   }
 
   public boolean isGameOver() {
     return isGameOver;
   }
-  public String displayCells() {
-    return String.format("\n--------\n %s %s %s\n %s %s %s\n %s %s %s\n--------\n",this.cells);
+
+  public String results () {
+    if (this.isGameOver && this.isDrawn()) {
+      return "Game ended in a Draw";
+    }
+   return String.format("%s wins", this.won.getName());
   }
 
+  public String displayGame() {
+    String player1Info = String.format("%s : %s", players[0].getName(), players[0].getSymbol());
+    String player2Info = String.format("%s : %s", players[1].getName(), players[1].getSymbol());
+    String playersInfo = String.format("-----------------------\n%s %s\n", player1Info, player2Info);
+
+    String board = String.format(" %s %s %s\n %s %s %s\n %s %s %s", this.cells);
+    return playersInfo + board;
+  }
+
+  public String prompt() {
+    return String.format("%s's turn. Please Enter the cell number > ", this.currentPlayer().getName());
+  }
   @Override
   public String toString() {
     return "Game{" +
