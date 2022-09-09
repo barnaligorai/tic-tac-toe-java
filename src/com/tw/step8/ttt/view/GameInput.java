@@ -23,4 +23,8 @@ public class GameInput {
       throw new InvalidCellException(pos);
     }
   }
+
+  public void stop() {
+    this.scanner.close();
+  }
 }

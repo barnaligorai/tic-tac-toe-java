@@ -35,11 +35,11 @@ class GameTest {
     Player barnali = new Player("barnali", Symbol.O);
 
     Game game = new Game(new Player[]{bani, barnali});
-    game.play(1);
-    game.play(5);
-    game.play(4);
-    game.play(3);
-    game.play(7);
+
+    int[] moves = new int[]{1,5,4,3,7};
+    for (int move:moves) {
+      game.play(move);
+    }
 
     assertTrue(game.isGameOver());
   }
@@ -50,19 +50,11 @@ class GameTest {
     Player barnali = new Player("barnali", Symbol.O);
 
     Game game = new Game(new Player[]{bani, barnali});
-    game.play(0);
-    game.play(1);
 
-    game.play(2);
-    game.play(4);
-
-    game.play(3);
-    game.play(6);
-
-    game.play(5);
-    game.play(8);
-
-    game.play(7);
+    int[] moves = new int[]{0,1,2,4,3,6,5,8,7};
+    for (int move:moves) {
+      game.play(move);
+    }
 
     assertTrue(game.isGameDrawn());
   }

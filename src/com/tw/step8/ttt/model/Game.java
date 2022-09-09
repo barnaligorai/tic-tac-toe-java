@@ -2,7 +2,6 @@ package com.tw.step8.ttt.model;
 
 import com.tw.step8.ttt.exception.CellNotVacantException;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Game {
@@ -13,7 +12,7 @@ public class Game {
   private int movesPlayed = 0;
   private boolean isGameOver = false;
   private boolean isGameDrawn = false;
-  private Player won;
+  public Player wonBy;
 
   public Game(Player[] players) {
     this.players = players;
@@ -66,7 +65,7 @@ public class Game {
 
     for (int[] combination : winningCombination) {
       if (isEvery(combination, symbol)) {
-        this.won = this.currentPlayer();
+        this.wonBy = this.currentPlayer();
         this.isGameOver = true;
         return true;
       }
@@ -91,27 +90,21 @@ public class Game {
     return isGameOver;
   }
 
-  public String results() {
-    if (this.isGameDrawn()) {
-      return "Game ended in a Draw";
-    }
-    return String.format("%s wins", this.won.getName());
-  }
-
   public String[] getCells() {
     return cells;
   }
 
   public boolean isGameDrawn() {
+
     return isGameDrawn;
   }
 
-  @Override
-  public String toString() {
-    return "Game{" +
-            "players=" + Arrays.toString(players) +
-            ", currentPlayer=" + this.currentPlayer() +
-            '}';
+  public void accept(Visitor visitor) {
+    visitor.visitGame(this);
   }
 
+  public Player[] getPlayers() {
+
+    return this.players;
+  }
 }

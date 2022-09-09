@@ -1,5 +1,6 @@
 package com.tw.step8.ttt.view;
 
+import com.tw.step8.ttt.model.Visitor;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -32,8 +33,14 @@ class RendererTest {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     Renderer renderer = new Renderer(outputStream);
 
-    String[] cells = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    renderer.displayBoard(cells);
+
+    // moking visitor
+    renderer.displayBoard(new Visitor(){
+      public String[] getCells() {
+        String[] cells = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        return cells;
+      }
+    });
 
     String expectedBoard = " 1 2 3\n 4 5 6\n 7 8 9\n";
     assertEquals(expectedBoard, outputStream.toString());

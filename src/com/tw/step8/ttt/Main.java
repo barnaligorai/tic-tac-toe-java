@@ -4,11 +4,13 @@ import com.tw.step8.ttt.controller.GameController;
 import com.tw.step8.ttt.model.Game;
 import com.tw.step8.ttt.model.Player;
 import com.tw.step8.ttt.symbol.Symbol;
-import com.tw.step8.ttt.view.View;
+import com.tw.step8.ttt.view.GameInput;
+import com.tw.step8.ttt.view.Renderer;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Scanner;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 public class Main {
   public static void main(String[] args) throws IOException {
@@ -17,11 +19,19 @@ public class Main {
     Player[] players = new Player[]{player1, player2};
     Game game = new Game(players);
 
-    Scanner scanner = new Scanner(System.in);
-    OutputStream out = System.out;
-    View view = new View(scanner, out);
+    PrintStream out = System.out;
+    InputStream inputStream = System.in;
+    GameInput gameInput = new GameInput(inputStream);
 
-    GameController gameController = new GameController(game, view);
+//    byte[] b = "9 1 5 2 6 3".getBytes();
+//    byte[] b = "1 2 3 5 4 7 6 9 8".getBytes();
+
+//    ByteArrayInputStream buff = new ByteArrayInputStream(b);
+//    GameInput gameInput = new GameInput(buff);
+
+    Renderer renderer = new Renderer(out);
+    GameController gameController = new GameController(game, gameInput, renderer);
+
     gameController.start();
   }
 }

@@ -1,67 +1,58 @@
 package com.tw.step8.ttt.controller;
 
+import com.tw.step8.ttt.model.Visitor;
+import com.tw.step8.ttt.view.GameInput;
+import com.tw.step8.ttt.view.Renderer;
+import com.tw.step8.ttt.exception.CellNotVacantException;
 import com.tw.step8.ttt.exception.InvalidCellException;
 import com.tw.step8.ttt.model.Game;
-import com.tw.step8.ttt.view.View;
 
 import java.io.IOException;
 
 public class GameController {
   private final Game game;
-  private final View view;
+  private final GameInput gameInput;
+  private final Renderer renderer;
 
-  public GameController(Game game, View view) {
+  public GameController(Game game, GameInput gameInput, Renderer renderer) {
     this.game = game;
-    this.view = view;
+    this.gameInput = gameInput;
+    this.renderer = renderer;
   }
 
   public void start() throws IOException {
+    Visitor visitor = new Visitor();
+
+    game.accept(visitor);
+    this.renderer.displayBoard(visitor);
+
     while (!this.game.isGameOver()){
-
-      // view
-      this.displayBoard();
       this.displayPrompt();
-
-      String pos = view.read(); // read
-
       try {
-        int cellPos = parsePosition(pos); // validate characters
-        validatePosition(cellPos); // validate invalid integers
+        int cellPos = gameInput.getPos();
+        game.play(cellPos - 1);
 
-          game.play(cellPos);
-
-      } catch (Throwable e) {
-        this.view.showError(e);
+        game.accept(visitor);
+        this.displayBoard(visitor);
+      } catch (InvalidCellException | CellNotVacantException e) {
+        this.renderer.showError(e);
       }
-
     }
 
-    this.displayBoard();
-    this.view.write(game.results());
-  }
-
-  private void validatePosition(int cellPos) throws Throwable {
-    if (cellPos < 1 || cellPos > 9) {
-      throw new InvalidCellException("Invalid cell", cellPos);
-    }
-  }
-
-  private int parsePosition(String pos) throws Throwable {
-    int cellPos;
-    try {
-      cellPos = Integer.parseInt(pos);
-      return cellPos;
-    } catch (Throwable e) {
-      throw new InvalidCellException("Invalid cell", pos);
-    }
+    game.accept(visitor);
+    this.renderer.diplayResult(visitor);
+    this.stop();
   }
 
   private void displayPrompt() throws IOException {
-    this.view.showPrompt(this.game.currentPlayer().getName());
+    this.renderer.showPrompt(this.game.currentPlayer().getName());
   }
 
-  private void displayBoard() throws IOException {
-    this.view.displayBoard(this.game.getCells());
+  private void displayBoard(Visitor visitor) throws IOException {
+    this.renderer.displayBoard(visitor);
   }
 
+  public void stop() {
+    this.gameInput.stop();
+  }
 }

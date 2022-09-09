@@ -1,7 +1,6 @@
 package com.tw.step8.ttt.view;
 
 import com.tw.step8.ttt.exception.InvalidCellException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
