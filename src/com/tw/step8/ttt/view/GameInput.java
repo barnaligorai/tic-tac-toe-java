@@ -1,26 +1,20 @@
-package com.tw.step8.ttt;
+package com.tw.step8.ttt.view;
 
 import com.tw.step8.ttt.exception.InvalidCellException;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class GameInput {
   private final Scanner scanner;
 
-  public GameInput(Scanner scanner) {
-    this.scanner = scanner;
+  public GameInput(InputStream inputStream) {
+    this.scanner = new Scanner(inputStream);
   }
 
   public int getPos() throws InvalidCellException {
     String pos = this.scanner.next();
-
-    try {
-      this.validatePosition(pos);
-
-    } catch (InvalidCellException e) {
-      throw e;
-    }
-
+    this.validatePosition(pos);
     return Integer.parseInt(pos);
   }
 
