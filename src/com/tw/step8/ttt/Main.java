@@ -23,12 +23,6 @@ public class Main {
     InputStream inputStream = System.in;
     GameInput gameInput = new GameInput(inputStream);
 
-//    byte[] b = "9 1 5 2 6 3".getBytes();
-//    byte[] b = "1 2 3 5 4 7 6 9 8".getBytes();
-
-//    ByteArrayInputStream buff = new ByteArrayInputStream(b);
-//    GameInput gameInput = new GameInput(buff);
-
     Renderer renderer = new Renderer(out);
     GameController gameController = new GameController(game, gameInput, renderer);
 

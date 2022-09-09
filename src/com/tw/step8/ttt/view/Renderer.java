@@ -1,7 +1,5 @@
 package com.tw.step8.ttt.view;
 
-import com.tw.step8.ttt.model.Visitor;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -16,13 +14,13 @@ public class Renderer {
     out.write(text.getBytes());
   }
 
-  public void showPrompt(String name) throws IOException {
-    String prompt = String.format("%s's turn. Please Enter the cell number > ", name);
+  public void showPrompt(GameData gameData) throws IOException {
+    String prompt = String.format("%s's turn. Please Enter the cell number > ", gameData.getCurrentPlayerName());
     this.write(prompt);
   }
 
-  public void displayBoard(Visitor visitor) throws IOException {
-    String board = String.format(" %s %s %s\n %s %s %s\n %s %s %s\n", visitor.getCells());
+  public void displayBoard(GameData gameData) throws IOException {
+    String board = String.format(" %s %s %s\n %s %s %s\n %s %s %s\n", gameData.getCells());
     this.write(board);
   }
 
@@ -31,13 +29,13 @@ public class Renderer {
     this.write(error);
   }
 
-  public void diplayResult(Visitor visitor) throws IOException {
+  public void displayResult(GameData gameData) throws IOException {
 
-    if (visitor.isGameDrawn()) {
+    if (gameData.isGameDrawn()) {
       this.write( "Game ended in a Draw");
       return;
     }
 
-    this.write(String.format("%s wins", visitor.getCurrentPlayer().getName()));
+    this.write(String.format("%s wins", gameData.getCurrentPlayerName()));
   }
 }

@@ -2,16 +2,15 @@ package com.tw.step8.ttt.model;
 
 import com.tw.step8.ttt.exception.CellNotVacantException;
 import com.tw.step8.ttt.symbol.Symbol;
+import com.tw.step8.ttt.view.Visitor;
 import org.junit.jupiter.api.Test;
-
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VisitorTest {
 
   @Test
-  void isGameDrawnShouldReturnFalse() throws CellNotVacantException {
+  void isGameDrawnShouldReturnFalseWhenGameIsNotDrawn() throws CellNotVacantException {
     Visitor visitor = new Visitor();
     Player bani = new Player("bani", Symbol.X);
     Player barnali = new Player("barnali", Symbol.O);
@@ -23,7 +22,7 @@ class VisitorTest {
   }
 
   @Test
-  void isGameDrawnShouldReturnTrue() throws CellNotVacantException {
+  void isGameDrawnShouldReturnTrueWhenGameIsDrawn() throws CellNotVacantException {
     Visitor visitor = new Visitor();
     Player bani = new Player("bani", Symbol.X);
     Player barnali = new Player("barnali", Symbol.O);
@@ -39,31 +38,18 @@ class VisitorTest {
   }
 
   @Test
-  void getCurrentPlayer() throws CellNotVacantException {
+  void getCurrentPlayerName() throws CellNotVacantException {
     Visitor visitor = new Visitor();
     Player bani = new Player("bani", Symbol.X);
     Player barnali = new Player("barnali", Symbol.O);
     Game game = new Game(new Player[]{bani, barnali});
 
     game.accept(visitor);
-    assertEquals(bani, visitor.getCurrentPlayer());
+    assertEquals("bani", visitor.getCurrentPlayerName());
 
     game.play(1);
     visitor.visitGame(game);
-    assertEquals(barnali, visitor.getCurrentPlayer());
-  }
-
-  @Test
-  void getPlayers() {
-    Visitor visitor = new Visitor();
-    Player bani = new Player("bani", Symbol.X);
-    Player barnali = new Player("barnali", Symbol.O);
-    Game game = new Game(new Player[]{bani, barnali});
-
-    visitor.visitGame(game);
-
-    Player[] expectedPlayers = new Player[]{bani, barnali};
-    assertArrayEquals(expectedPlayers, visitor.getPlayers());
+    assertEquals("barnali", visitor.getCurrentPlayerName());
   }
 
   @Test

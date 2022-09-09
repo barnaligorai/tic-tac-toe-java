@@ -1,6 +1,6 @@
 package com.tw.step8.ttt.controller;
 
-import com.tw.step8.ttt.model.Visitor;
+import com.tw.step8.ttt.view.Visitor;
 import com.tw.step8.ttt.view.GameInput;
 import com.tw.step8.ttt.view.Renderer;
 import com.tw.step8.ttt.exception.CellNotVacantException;
@@ -26,26 +26,29 @@ public class GameController {
     game.accept(visitor);
     this.renderer.displayBoard(visitor);
 
+    this.runGame(visitor);
+
+    game.accept(visitor);
+    this.renderer.displayResult(visitor);
+    this.stop();
+  }
+
+  private void runGame(Visitor visitor) throws IOException {
     while (!this.game.isGameOver()){
-      this.displayPrompt();
+      this.displayPrompt(visitor);
       try {
         int cellPos = gameInput.getPos();
         game.play(cellPos - 1);
-
         game.accept(visitor);
         this.displayBoard(visitor);
       } catch (InvalidCellException | CellNotVacantException e) {
         this.renderer.showError(e);
       }
     }
-
-    game.accept(visitor);
-    this.renderer.diplayResult(visitor);
-    this.stop();
   }
 
-  private void displayPrompt() throws IOException {
-    this.renderer.showPrompt(this.game.currentPlayer().getName());
+  private void displayPrompt(Visitor visitor) throws IOException {
+    this.renderer.showPrompt(visitor);
   }
 
   private void displayBoard(Visitor visitor) throws IOException {

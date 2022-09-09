@@ -1,6 +1,5 @@
 package com.tw.step8.ttt.view;
 
-import com.tw.step8.ttt.model.Visitor;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -22,7 +21,16 @@ class RendererTest {
   void showPrompt() throws IOException {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     Renderer renderer = new Renderer(outputStream);
-    renderer.showPrompt("bani");
+
+    GameData gameData = new Visitor() {
+      @Override
+      public String getCurrentPlayerName() {
+        return "bani";
+      }
+    };
+
+
+    renderer.showPrompt(gameData);
 
     String expectedPrompt = "bani's turn. Please Enter the cell number > ";
     assertEquals(expectedPrompt, outputStream.toString());
@@ -33,12 +41,10 @@ class RendererTest {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     Renderer renderer = new Renderer(outputStream);
 
-
-    // moking visitor
-    renderer.displayBoard(new Visitor(){
+    renderer.displayBoard(new Visitor() {
+      @Override
       public String[] getCells() {
-        String[] cells = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        return cells;
+        return new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
       }
     });
 

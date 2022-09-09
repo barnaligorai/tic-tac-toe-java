@@ -1,18 +1,22 @@
 package com.tw.step8.ttt.model;
 
 import com.tw.step8.ttt.exception.CellNotVacantException;
+import com.tw.step8.ttt.view.GameVisitor;
+import com.tw.step8.ttt.view.Visitor;
 
 import java.util.Objects;
 
 public class Game {
-  private static final int[][] winningCombination = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
+  private static final int[][] winningCombination = {
+          {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+          {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+          {0, 4, 8}, {2, 4, 6}};
   private final Player[] players;
   private final String[] cells = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
   private int currentPlayerIndex;
   private int movesPlayed = 0;
   private boolean isGameOver = false;
   private boolean isGameDrawn = false;
-  public Player wonBy;
 
   public Game(Player[] players) {
     this.players = players;
@@ -65,7 +69,6 @@ public class Game {
 
     for (int[] combination : winningCombination) {
       if (isEvery(combination, symbol)) {
-        this.wonBy = this.currentPlayer();
         this.isGameOver = true;
         return true;
       }
@@ -99,7 +102,7 @@ public class Game {
     return isGameDrawn;
   }
 
-  public void accept(Visitor visitor) {
+  public void accept(GameVisitor visitor) {
     visitor.visitGame(this);
   }
 
