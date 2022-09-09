@@ -1,21 +1,15 @@
 package com.tw.step8.ttt.exception;
 
-public class InvalidCellException extends Throwable {
+public class InvalidCellException extends Exception {
 
   private final String pos;
 
-  public InvalidCellException(String message, String pos) {
-    super(message);
+  public InvalidCellException(String pos) {
     this.pos = pos;
-  }
-
-  public InvalidCellException(String message, int cellPos) {
-    super(message);
-    this.pos = cellPos + "";
   }
 
   @Override
   public String getMessage() {
-    return super.getMessage() + " " + this.pos;
+    return "Invalid cell " + this.pos;
   }
 }
